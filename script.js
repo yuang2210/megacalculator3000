@@ -1,4 +1,4 @@
-botao = document.getElementById("btn-calcular");
+const = document.getElementById("btn-calcular");
 const input = document.getElementById("abcdefghjklmnop");
 const resultado = document.getElementById("resultado");
 
@@ -6,7 +6,7 @@ function gcd(a, b) {
     a = Math.abs(Math.round(a));
     b = Math.abs(Math.round(b));
     while (b) { let t = b; b = a % b; a = t; }
-    reconstturn a;
+    return a;
 }
 
 function aproximarFracao(decimal) {
