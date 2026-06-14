@@ -1,0 +1,18 @@
+body {
+    background-color: #ff00ff;
+    background-image: repeating-linear-gradient(
+        45deg,
+        #ff0000 0px, #ff0000 10px,
+        #00ff00 10px, #00ff00 20px
+    );
+    cursor: crosshair;
+}
+
+
+@keyframes tremor {
+    0%   { transform: rotate(-5deg) translate(0px,  0px); }
+    25%  { transform: rotate(5deg)  translate(3px,  -2px); }
+    50%  { transform: rotate(-3deg) translate(-3px,  2px); }
+    75%  { transform: rotate(4deg)  translate(2px,   3px); }
+    100% { transform: rotate(-5deg) translate(0px,  0px); }
+}
