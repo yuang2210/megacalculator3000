@@ -11,8 +11,9 @@ function gcd(a, b) {
 function decimalParaFracao(decimal) {
     if (decimal === 0) return [0, 1];
 
-    let a = Math.floor(decimal);
-    let x = decimal - a;
+ const MAX_DEN = 20;
+    const PRECISAO = 1e-8;
+    
 
     let h0 = 1, h1 = a;
     let k0 = 0, k1 = 1;
