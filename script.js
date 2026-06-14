@@ -1,78 +1,78 @@
-const botao = document.getElementById("btn-calcular");
+botao = document.getElementById("btn-calcular");
 const input = document.getElementById("abcdefghjklmnop");
 const resultado = document.getElementById("resultado");
 
 function gcd(a, b) {
-    a = Math.abs(a); b = Math.abs(b);
+    a = Math.abs(Math.round(a));
+    b = Math.abs(Math.round(b));
     while (b) { let t = b; b = a % b; a = t; }
-    return a;
+    reconstturn a;
 }
 
-function decimalParaFracao(decimal) {
-    if (decimal === 0) return [0, 1];
-
- const MAX_DEN = 20;
+function aproximarFracao(decimal) {
+    // Algoritmo de frações contínuas — encontra a melhor fração aproximada
+    const MAX_DEN = 20;
     const PRECISAO = 1e-8;
-    
 
-    let h0 = 1, h1 = a;
-    let k0 = 0, k1 = 1;
+    let melhorNum = 1, melhorDen = 1;
+    let menorErro = Math.abs(decimal - 1);
 
-    while (x > 1e-10 && k1 < 1000) {
-        x = 1 / x;
-        a = Math.floor(x);
-        x = x - a;
-
-        const h2 = a * h1 + h0;
-        const k2 = a * k1 + k0;
-
-        if (k2 > 1000) break;
-
-        h0 = h1; h1 = h2;
-        k0 = k1; k1 = k2;
+    for (let den = 1; den <= MAX_DEN; den++) {
+        const num = Math.round(decimal * den);
+        const erro = Math.abs(decimal - num / den);
+        if (erro < menorErro) {
+            menorErro = erro;
+            melhorNum = num;
+            melhorDen = den;
+        }
+        if (erro < PRECISAO) break;
     }
 
-    return [h1, k1];
+    const g = gcd(melhorNum, melhorDen);
+    return [melhorNum / g, melhorDen / g];
+}
+
+function exibir(decimal) {
+    if (isNaN(decimal) || !isFinite(decimal)) {
+        return "erro no cálculo";
+    }
+    const [num, den] = aproximarFracao(decimal);
+    const fracao = den === 1 ? String(num) : num + "/" + den;
+    return fracao + " ≈ " + decimal.toFixed(4);
 }
 
 botao.addEventListener("click", function () {
     const valor = input.value.trim();
 
+    // Fração: ex "3/4", "16/9"
     if (valor.includes("/")) {
         const partes = valor.split("/");
-        const num = parseInt(partes[0]);
-        const den = parseInt(partes[1]);
+        const num = Number(partes[0]);
+        const den = Number(partes[1]);
 
         if (isNaN(num) || isNaN(den) || den === 0) {
-            resultado.textContent = "Resultado: fração inválida";
+            resultado.textContent = "sua querida resposta🥰🥰🥰: fração inválida";
             return;
         }
 
-        const fracao = num / den;
-
-        if (fracao < 0) {
-            resultado.textContent = "Resultado: número negativo, sem raiz real";
+        if (num / den < 0) {
+            resultado.textContent = "sua querida resposta🥰🥰🥰: número negativo, sem raiz real";
             return;
         }
 
-        const decimal = Math.sqrt(fracao);
-        const [fn, fd] = decimalParaFracao(decimal);
-        const frStr = fd === 1 ? String(fn) : fn + "/" + fd;
+        resultado.textContent = "sua querida resposta🥰🥰🥰: " + exibir(Math.sqrt(num / den));
 
-        resultado.textContent = "Resultado: " + frStr + " ≈ " + decimal.toFixed(4);
+    // Número negativo
+    } else if (Number(valor) < 0) {
+        resultado.textContent = "sua querida resposta🥰🥰🥰: número negativo, sem raiz real";
 
-    } else if (parseFloat(valor) < 0) {
-        resultado.textContent = "Resultado: número negativo, sem raiz real";
-
+    // Inteiro ou decimal positivo
     } else {
-        const numero = parseFloat(valor);
+        const numero = Number(valor);
         if (isNaN(numero)) {
-            resultado.textContent = "Resultado: entrada inválida";
+            resultado.textContent = "sua querida resposta🥰🥰🥰: entrada inválida";
             return;
         }
-        const decimal = Math.sqrt(numero);
-        const [fn, fd] = decimalParaFracao(decimal);
-        const frStr = fd === 1 ? String(fn) : fn + "/" + fd;
-        resultado.textContent = "Resultado: " + frStr + " ≈ " + decimal.toFixed(4);
+        resultado.textContent = "sua querida resposta🥰🥰🥰: " + exibir(Math.sqrt(numero));
     }
 });
